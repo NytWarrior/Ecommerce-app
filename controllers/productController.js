@@ -44,3 +44,28 @@ export const createProductController = async (req, res) => {
         })
     }
 }
+
+//get all products
+export const getProductCntroller = async (req, res) => {
+    try {
+        const products = await productModel
+            .find({})
+            .select('-photo')
+            .limit(12)
+            .sort({ createdAt: -1 });
+
+        res.status(200).send({
+            success: true,
+            countTotal: products.length,
+            message: 'All producteds!!',
+            products,
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: 'Something went wrong!!',
+            error: error.message
+        })
+    }
+}
