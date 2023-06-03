@@ -46,10 +46,11 @@ export const createProductController = async (req, res) => {
 }
 
 //get all products
-export const getProductCntroller = async (req, res) => {
+export const getAllProductController = async (req, res) => {
     try {
         const products = await productModel
             .find({})
+            .populate('category')
             .select('-photo')
             .limit(12)
             .sort({ createdAt: -1 });
@@ -57,9 +58,33 @@ export const getProductCntroller = async (req, res) => {
         res.status(200).send({
             success: true,
             countTotal: products.length,
-            message: 'All producteds!!',
+            message: 'All producteds fetched!!',
             products,
         })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: 'Something went wrong!!',
+            error: error.message
+        })
+    }
+}
+
+//get a product
+export const getProductController = async (req, res) => {
+    try {
+        const product = await productModel
+            .findOne({ slug: req.params.slug })
+            .populate('category')
+            .select('-photo')
+
+        res.status(200).send({
+            success: true,
+            message: 'Product fetched!!',
+            product,
+        })
+
     } catch (error) {
         console.log(error);
         res.status(500).send({
