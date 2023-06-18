@@ -5,6 +5,7 @@ import {
     getAllProductController,
     getProductController,
     getProductImageController,
+    productCategoryController,
     productCountController,
     productFiltersController,
     productListController,
@@ -44,5 +45,7 @@ router.get("/product-list/:page", productListController);
 router.get("/search/:keyword", searchProductController);
 
 router.get('/related-product/:pid/:cid', relatedProductController);
+
+router.get("/product-category/:slug", productCategoryController);
 
 export default router;
